@@ -1,0 +1,20 @@
+extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+//----------------------------------------------------------------------------------
+// <copyright file="%FileName%" company="Prakrishta Technologies">
+//     Copyright (c) %CurrentYear% Prakrishta Technologies. All rights reserved.
+// </copyright>
+// <author>Arul Sengottaiyan</author>
+// <date>%CreationMonth%/%CreationDay%/%CreationYear%</date>
+// <summary>%FileName%</summary>
+//-----------------------------------------------------------------------------------
+extensions: .aspx .ascx
+<%-- 
+Copyright (c) 2011 rubicon IT GmbH
+--%>
+extensions: .vb
+'Sample license text.
+extensions:  .xml .config .xsd
+<!--
+Sample license text.
+-->
