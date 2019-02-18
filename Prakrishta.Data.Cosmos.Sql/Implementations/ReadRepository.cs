@@ -49,7 +49,6 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         public ReadRepository(string databaseId, string collectionId, IDocumentClient client, RequestOptions requestOptions)
             : base(databaseId, collectionId, client, requestOptions)
         {
-            this.Initialization = this.CreateCollectionIfNotExistsAsync();
         }
 
         /// <inheritdoc />

@@ -18,7 +18,7 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
     /// Interface that has methods for deleting records
     /// </summary>
     /// <typeparam name="TResult">The result entity type</typeparam>
-    public interface IDeleteAllItemAsync<TResult>
+    public interface IDeleteAllItemsAsync<TResult>
     {
         /// <summary>
         /// Delete an item

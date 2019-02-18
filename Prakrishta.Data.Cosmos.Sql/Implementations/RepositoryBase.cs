@@ -32,7 +32,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
             this.CollectionId = collectionId;
             this.Client = client;
             this.RequestOptions = requestOptions;
-            this.Initialization = this.CreateDatabaseIfNotExistsAsync();
+            this.Initialization = this.InitializeAsync();
         }
 
         /// <summary>
@@ -58,15 +58,15 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         /// <summary>
         /// Gets or sets the result of the asynchronous initialization of this instance.
         /// </summary>
-        public Task Initialization { get; protected set; }
+        public Task Initialization { get; }
 
         /// <summary>
         /// Creates collection if the collection doesn't exist with given collection id in the given database 
         /// </summary>
         /// <returns>Task that is awaitable</returns>
-        protected async Task CreateCollectionIfNotExistsAsync()
+        protected async Task CreateCollectionIfNotExistsAsync(Database database)
         {
-            await this.Client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(this.DatabaseId)
+            await this.Client.CreateDocumentCollectionIfNotExistsAsync(database.SelfLink
                 , new DocumentCollection { Id = this.CollectionId }, this.RequestOptions);
         }
 
@@ -74,9 +74,20 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         /// Creates database if the database doesn't exist with given database id 
         /// </summary>
         /// <returns>Task that is awaitable</returns>
-        private async Task CreateDatabaseIfNotExistsAsync()
+        protected async Task<Database> CreateDatabaseIfNotExistsAsync()
         {
-            await this.Client.CreateDatabaseIfNotExistsAsync(new Database { Id = this.DatabaseId }, this.RequestOptions);
+            return await this.Client.CreateDatabaseIfNotExistsAsync(new Database { Id = this.DatabaseId }, this.RequestOptions);
+        }
+
+        /// <summary>
+        /// Async initialization to create database and collection if not exists
+        /// </summary>
+        /// <returns></returns>
+        private async Task InitializeAsync()
+        {
+            var database = this.CreateDatabaseIfNotExistsAsync();
+            database.Wait();
+            await this.CreateCollectionIfNotExistsAsync(database.Result);
         }
     }
 }

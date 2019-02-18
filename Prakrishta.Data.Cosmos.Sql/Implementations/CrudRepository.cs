@@ -19,7 +19,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
     /// Class that definitions for CRUD operations
     /// </summary>
     /// <typeparam name="TEntity">The document entity type</typeparam>
-    public sealed class CrudRepository<TEntity> : ReadRepository<TEntity>, ICrudRepository<TEntity, Document>
+    public sealed class CrudRepository<TEntity> : ReadRepository<TEntity>, ICrudRepository<TEntity>
         where TEntity : class
     {
         /// <summary>
