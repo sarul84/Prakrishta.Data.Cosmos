@@ -18,7 +18,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Interfaces
     /// <summary>
     /// Interface that has methods for read only repository
     /// </summary>
-    public interface IReadRepository<TEntity> : ISearchSingleAsync<string, TEntity>, ISearchCollectionAsync<TEntity>
+    public interface IReadRepository<TEntity> : ISearchSingleAsync<string, TEntity>, ISearchCollectionAsync<TEntity>, ICountAsync<TEntity>
         where TEntity : class
     {
         /// <summary>
@@ -30,12 +30,6 @@ namespace Prakrishta.Data.Cosmos.Sql.Interfaces
         /// Gets or sets collection id
         /// </summary>
         string CollectionId { get; set; }
-
-        /// <summary>
-        /// Get documents count in a collection
-        /// </summary>
-        /// <returns>Number of documents</returns>
-        Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate = null);
 
         /// <summary>
         /// Get all the documents from a collection

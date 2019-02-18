@@ -28,18 +28,18 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
     /// <summary>
     /// Interface that has definitions to add or create an item / entity
     /// </summary>
-    /// <typeparam name="TInput">Input entity type</typeparam>
     /// <typeparam name="TEntity">Entity type that has to be created</typeparam>
-    public interface IAddItemAsync<in TInput, TEntity>
+    /// 
+    public interface IAddItemAsync<in TEntity, TResult>
         where TEntity : class
-        where TInput : class
+        where TResult : class
     {
         /// <summary>
         /// Adds a new item or entity
         /// </summary>
         /// <param name="entity">Input entity object</param>
         /// <returns>Returns newly created entity or item</returns>
-        Task<TEntity> AddAsync(TInput entity);
+        Task<TResult> AddAsync(TEntity entity);
     }
 
     /// <summary>

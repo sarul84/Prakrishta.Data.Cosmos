@@ -89,7 +89,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         }
 
         /// <inheritdoc />
-        public async Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate = null)
+        public async Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             IDocumentQuery<TEntity> query = this.Client.CreateDocumentQuery<TEntity>(
                 UriFactory.CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId))

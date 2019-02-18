@@ -9,12 +9,16 @@
 
 namespace Prakrishta.Data.Cosmos.Sql.Interfaces
 {
+    using Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces;
+
     /// <summary>
     /// Interface that has definitions for CRUD operations
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface ICrudRepository<TEntity> : IReadRepository<TEntity>
+    public interface ICrudRepository<TEntity, TResult> : IReadRepository<TEntity>, IAddItemAsync<TEntity, TResult>, IUpdateItemAsync<TEntity>
         where TEntity : class
+        where TResult : class
     {
+
     }
 }
