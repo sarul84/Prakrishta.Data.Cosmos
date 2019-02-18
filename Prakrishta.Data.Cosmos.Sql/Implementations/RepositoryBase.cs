@@ -20,17 +20,6 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
     public abstract class RepositoryBase : IAsyncInitialization
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="RepositoryBase"/> class
-        /// </summary>
-        /// <param name="databaseId">The database id</param>
-        /// <param name="collectionId">The collection id</param>
-        /// <param name="client">The document client</param>
-        public RepositoryBase(string databaseId, string collectionId, IDocumentClient client)
-            : this(databaseId, collectionId, client, null)
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instances of <see cref="RepositoryBase"/> class
         /// </summary>
         /// <param name="databaseId">The database id</param>
@@ -69,16 +58,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         /// <summary>
         /// Gets or sets the result of the asynchronous initialization of this instance.
         /// </summary>
-        public Task Initialization { get; }
-
-        /// <summary>
-        /// Creates database if the database doesn't exist with given database id 
-        /// </summary>
-        /// <returns>Task that is awaitable</returns>
-        private async Task CreateDatabaseIfNotExistsAsync()
-        {
-            await this.Client.CreateDatabaseIfNotExistsAsync(new Database { Id = this.DatabaseId }, this.RequestOptions);
-        }
+        public Task Initialization { get; protected set; }
 
         /// <summary>
         /// Creates collection if the collection doesn't exist with given collection id in the given database 
@@ -88,6 +68,15 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         {
             await this.Client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(this.DatabaseId)
                 , new DocumentCollection { Id = this.CollectionId }, this.RequestOptions);
+        }
+
+        /// <summary>
+        /// Creates database if the database doesn't exist with given database id 
+        /// </summary>
+        /// <returns>Task that is awaitable</returns>
+        private async Task CreateDatabaseIfNotExistsAsync()
+        {
+            await this.Client.CreateDatabaseIfNotExistsAsync(new Database { Id = this.DatabaseId }, this.RequestOptions);
         }
     }
 }

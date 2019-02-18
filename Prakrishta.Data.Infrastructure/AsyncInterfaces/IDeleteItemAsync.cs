@@ -11,7 +11,21 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
 {
     using System;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Threading.Tasks;
+
+    /// <summary>
+    /// Interface that has methods for deleting records
+    /// </summary>
+    /// <typeparam name="TResult">The result entity type</typeparam>
+    public interface IDeleteAllItemAsync<TResult>
+    {
+        /// <summary>
+        /// Delete an item
+        /// </summary>
+        /// <returns>The awaitable task</returns>
+        Task<TResult> DeleteAllAsync();
+    }
 
     /// <summary>
     /// Interface that has methods for deleting records
@@ -23,8 +37,9 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// Delete an item
         /// </summary>
         /// <param name="predicate">The filter criteria</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>The awaitable task</returns>
-        Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
+        Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken));
     }
 
     /// <summary>
@@ -37,23 +52,24 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// Delete an item
         /// </summary>
         /// <param name="id">Identity key</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>The awaitable task</returns>
-        Task DeleteAsync(TIdentity id);
+        Task DeleteAsync(TIdentity id, CancellationToken token = default(CancellationToken));
     }
 
     /// <summary>
     /// Interface that has methods for deleting records
     /// </summary>
-    /// <typeparam name="TIdentity1">The identity type</typeparam>
-    /// /// <typeparam name="TIdentity2">The identity type</typeparam>
-    public interface IDeleteItemByIdAsync<in TIdentity1, in TIdentity2>
+    /// <typeparam name="TIdentity">The identity type</typeparam>
+    /// /// <typeparam name="TResult">The result entity type</typeparam>
+    public interface IDeleteItemByIdAsync<in TIdentity, TResult>
     {
         /// <summary>
         /// Delete an item
         /// </summary>
-        /// <param name="id1">Identity key 1</param>
-        /// <param name="id2">Identity key 2</param> 
+        /// <param name="id">Identity key</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>The awaitable task</returns>
-        Task DeleteAsync(TIdentity1 id1, TIdentity2 id2);
+        Task<TResult> DeleteAsync(TIdentity id, CancellationToken token = default(CancellationToken));
     }
 }

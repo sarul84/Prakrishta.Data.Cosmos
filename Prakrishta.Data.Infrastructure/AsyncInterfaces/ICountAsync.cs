@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
@@ -21,8 +22,9 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// <summary>
         /// Gets record count async
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <returns>Number of records</returns>
-        Task<int> GetCountAsync();
+        Task<int> GetCountAsync(CancellationToken token = default(CancellationToken));
     }
 
     /// <summary>
@@ -35,8 +37,9 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// Gets record count async
         /// </summary>
         /// <param name="predicate">The filter condition</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>Number of records</returns>
-        Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken));
     }
 
     /// <summary>
@@ -49,7 +52,8 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// Gets record count async by Id
         /// </summary>
         /// <param name="id">The identity key</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>Number of records</returns>
-        Task<int> GetCountAsync(TIdentity id);
+        Task<int> GetCountAsync(TIdentity id, CancellationToken token = default(CancellationToken));
     }
 }

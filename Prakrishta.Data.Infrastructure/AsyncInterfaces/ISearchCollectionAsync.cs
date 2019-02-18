@@ -12,6 +12,7 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -26,8 +27,9 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// Get all entities for the given filter criteria
         /// </summary>
         /// <param name="predicate">Filter criteria</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>Collection of entities</returns>
-        Task<ICollection<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<ICollection<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken));
     }
 
     /// <summary>

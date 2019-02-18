@@ -9,16 +9,18 @@
 
 namespace Prakrishta.Data.Cosmos.Sql.Interfaces
 {
+    using Microsoft.Azure.Documents;
     using Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Interface that has definitions for CRUD operations
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface ICrudRepository<TEntity, TResult> : IReadRepository<TEntity>, IAddItemAsync<TEntity, TResult>, IUpdateItemAsync<TEntity>
+    public interface ICrudRepository<TEntity, TResult> : IReadRepository<TEntity>, IAddItemAsync<TEntity, TResult>, IUpdateItemAsync<string, TEntity, TResult>
+        , IUpdateItemAsync<Document>, IDeleteItemByIdAsync<string, Document>, IDeleteAllItemAsync<DocumentCollection>
         where TEntity : class
         where TResult : class
     {
-
     }
 }

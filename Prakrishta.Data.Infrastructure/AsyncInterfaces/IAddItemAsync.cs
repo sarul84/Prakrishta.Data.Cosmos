@@ -10,6 +10,7 @@
 namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
 {
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -21,8 +22,9 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// <summary>
         /// Adds a new item or entity
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <returns>Returns newly created entity or item</returns>
-        Task<TEntity> AddAsync();
+        Task<TEntity> AddAsync(CancellationToken token = default(CancellationToken));
     }
 
     /// <summary>
@@ -38,8 +40,9 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// Adds a new item or entity
         /// </summary>
         /// <param name="entity">Input entity object</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>Returns newly created entity or item</returns>
-        Task<TResult> AddAsync(TEntity entity);
+        Task<TResult> AddAsync(TEntity entity, CancellationToken token = default(CancellationToken));
     }
 
     /// <summary>
@@ -51,7 +54,8 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
         /// <summary>
         ///  Add collection of items
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <param name="entities">Entity collection to be added</param>
-        Task AddRange(IEnumerable<TEntity> entities);
+        Task AddRange(IEnumerable<TEntity> entities, CancellationToken token = default(CancellationToken));
     }
 }

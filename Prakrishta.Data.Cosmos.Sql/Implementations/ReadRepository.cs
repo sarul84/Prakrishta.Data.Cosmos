@@ -18,6 +18,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
     using System.Linq;
     using System.Linq.Expressions;
     using System.Net;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -34,7 +35,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         /// <param name="collectionId">The collection id</param>
         /// <param name="client">The document database client</param>
         public ReadRepository(string databaseId, string collectionId, IDocumentClient client)
-            : base(databaseId, collectionId, client)
+            : this(databaseId, collectionId, client, null)
         {
         }
 
@@ -48,10 +49,11 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         public ReadRepository(string databaseId, string collectionId, IDocumentClient client, RequestOptions requestOptions)
             : base(databaseId, collectionId, client, requestOptions)
         {
+            this.Initialization = this.CreateCollectionIfNotExistsAsync();
         }
 
         /// <inheritdoc />
-        public async Task<ICollection<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<ICollection<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken))
         {
             IDocumentQuery<TEntity> query = this.Client.CreateDocumentQuery<TEntity>(
                 UriFactory.CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId))
@@ -61,7 +63,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
             List<TEntity> results = new List<TEntity>();
             if (query.HasMoreResults)
             {
-                results.AddRange(await query.ExecuteNextAsync<TEntity>());
+                results.AddRange(await query.ExecuteNextAsync<TEntity>(token));
             }
 
             return results;
@@ -75,11 +77,11 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         }
 
         /// <inheritdoc />
-        public async Task<TEntity> GetAsync(string id)
+        public async Task<TEntity> GetAsync(string id, CancellationToken token = default(CancellationToken))
         {
             var documentResponse = await this.Client.ReadDocumentAsync<TEntity>(
                 UriFactory.CreateDocumentUri(this.DatabaseId, this.CollectionId, id),
-                this.RequestOptions);
+                this.RequestOptions, token);
 
             if (documentResponse?.StatusCode == HttpStatusCode.NotFound)
             {
@@ -89,7 +91,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         }
 
         /// <inheritdoc />
-        public async Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken))
         {
             IDocumentQuery<TEntity> query = this.Client.CreateDocumentQuery<TEntity>(
                 UriFactory.CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId))
@@ -98,7 +100,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
 
             if (query.HasMoreResults)
             {
-                var result = await query.ExecuteNextAsync<TEntity>();
+                var result = await query.ExecuteNextAsync<TEntity>(token);
                 return result.Count;
             }
 

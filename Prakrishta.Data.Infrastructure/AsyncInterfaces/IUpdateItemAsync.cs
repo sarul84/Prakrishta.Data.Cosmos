@@ -15,18 +15,34 @@ namespace Prakrishta.Data.Cosmos.Infrastructure.AsyncInterfaces
     /// <summary>
     /// THe interface for update methods
     /// </summary>
-    /// <typeparam name="TEntity">The entity type</typeparam>
-    /// <typeparam name="TIdentity">The input type</typeparam>
-    public interface IUpdateItemAsync<in TIdentity, TEntity>
+    /// <typeparam name="TEntity">The input entity type</typeparam>
+    /// <typeparam name="TResult">The output type</typeparam>
+    public interface IUpdateItemAsync<in TEntity, TResult>
         where TEntity : class
     {
         /// <summary>
         /// Update record with modified details
         /// </summary>
-        /// <param name="id">The identity field</param>
         /// <param name="entity">The modified entity</param>
         /// <returns>The updated entity</returns>
-        Task<TEntity> UpdateAsync(TIdentity id, TEntity entity);
+        Task<TResult> UpdateAsync(TEntity entity);
+    }
+
+    /// <summary>
+    /// THe interface for update methods
+    /// </summary>
+    /// <typeparam name="TIdentity">The identity type</typeparam>
+    /// <typeparam name="TEntity">The input entity type</typeparam>
+    /// <typeparam name="TResult">The output type</typeparam>
+    public interface IUpdateItemAsync<in TIdentity, in TEntity, TResult>
+        where TEntity : class
+    {
+        /// <summary>
+        /// Update record with modified details
+        /// </summary>
+        /// <param name="entity">The modified entity</param>
+        /// <returns>The updated entity</returns>
+        Task<TResult> UpdateAsync(TIdentity id, TEntity entity);
     }
 
     /// <summary>
