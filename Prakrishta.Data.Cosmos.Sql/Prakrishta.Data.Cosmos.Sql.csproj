@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Arul Sengottaiyan</Authors>
+    <Company>Prakrishta Technologies</Company>
   </PropertyGroup>
 
   <ItemGroup>
