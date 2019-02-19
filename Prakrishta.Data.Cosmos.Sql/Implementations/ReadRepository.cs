@@ -105,5 +105,24 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
 
             return 0;
         }
+
+        /// <inheritdoc />
+        public Task<int> GetCountAsync(CancellationToken token = default(CancellationToken))
+        {
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
+
+            if(token.IsCancellationRequested)
+            {
+                throw new TaskCanceledException("The task has been cancelled");
+            }
+
+            IQueryable <dynamic> query = this.Client.CreateDocumentQuery<dynamic>(UriFactory.CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId),
+                                                "SELECT VALUE COUNT(1) FROM c", queryOptions);
+            foreach (dynamic count in query)
+            {
+                return Task.FromResult<int>((int)count);
+            }
+            return Task.FromResult(0);
+        }
     }
 }

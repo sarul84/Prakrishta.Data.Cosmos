@@ -18,7 +18,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Interfaces
     /// <summary>
     /// Interface that has methods for read only repository
     /// </summary>
-    public interface IReadRepository<TEntity> : ISearchSingleAsync<string, TEntity>, ISearchCollectionAsync<TEntity>, ICountAsync<TEntity>
+    public interface IReadRepository<TEntity> : ISearchSingleAsync<string, TEntity>, ISearchCollectionAsync<TEntity>, ICountAsync<TEntity>, ICountAsync
         where TEntity : class
     {
         /// <summary>
