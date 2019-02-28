@@ -51,7 +51,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         protected IDocumentClient Client { get; set; }
 
         /// <summary>
-        /// Gets or sets Document client object
+        /// Gets or sets Request options
         /// </summary>
         protected RequestOptions RequestOptions { get; set; }
 

@@ -14,6 +14,9 @@ namespace Prakrishta.Data.Cosmos.Sql.Interfaces
     using System.Threading.Tasks;
     using System.Linq.Expressions;
     using Microsoft.Azure.Documents;
+    using System.Linq;
+    using Microsoft.Azure.Documents.Client;
+    using System.Threading;
 
     /// <summary>
     /// Interface that has methods for read only repository
@@ -36,5 +39,35 @@ namespace Prakrishta.Data.Cosmos.Sql.Interfaces
         /// </summary>
         /// <returns>Collection of documents</returns>
         Task<DocumentCollection> GetAllAsync();
+
+        /// <summary>
+        /// Get the queryable collection
+        /// </summary>
+        /// <param name="take">The number of records to be taken from the result</param>
+        /// <param name="skip">The number of records to be skipped from the result before take operation</param>
+        /// <param name="feedOptions">The feed options for this operation.</param>
+        /// <returns>Returns an IQueryable that matches the expression provided.</returns>
+        IQueryable<TEntity> Query(int? take = null, int? skip = null, FeedOptions feedOptions = null);
+
+        /// <summary>
+        /// Get the queryable collection
+        /// </summary>
+        /// <param name="sql">The sql query</param>
+        /// <param name="parameters">The sql parameters to replace if any</param>
+        /// <param name="take">The number of records to be taken from the result</param>
+        /// <param name="skip">The number of records to be skipped from the result before take operation</param>
+        /// <param name="feedOptions">The feed options for this operation.</param>
+        /// <returns>Returns an IQueryable that matches the expression provided.</returns>
+        IQueryable<TEntity> Query(string sql, SqlParameterCollection parameters, int? take = null, int? skip = null, FeedOptions feedOptions = null);
+
+        /// <summary>
+        /// Get the Enumerable collection
+        /// </summary>
+        /// <param name="predicate">The filter condition</param>
+        /// <param name="continuationToken">The continuation token from previous result</param>
+        /// <param name="take">The number of records to be retrieved</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns>The collection of records that matches the filter criteria</returns>
+        Task<IFeedResponse<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> predicate, string continuationToken, int? take = null, CancellationToken token = default(CancellationToken));
     }
 }

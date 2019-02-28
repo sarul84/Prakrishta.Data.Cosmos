@@ -4,6 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Arul Sengottaiyan</Authors>
     <Company>Prakrishta Technologies</Company>
+    <PackageTags>C#, Repository-pattern, Cosmos, Cosmos-sql, netstandard</PackageTags>
+    <PackageReleaseNotes>Generic repository pattern for cosmos sql api model. Provides option for getting document count in a collection</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

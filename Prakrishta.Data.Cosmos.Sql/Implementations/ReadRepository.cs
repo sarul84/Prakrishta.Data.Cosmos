@@ -54,6 +54,11 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         /// <inheritdoc />
         public async Task<ICollection<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken))
         {
+            if (predicate == null)
+            {
+                predicate = x => true;
+            }
+
             IDocumentQuery<TEntity> query = this.Client.CreateDocumentQuery<TEntity>(
                 UriFactory.CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId))
                 .Where(predicate)
@@ -92,6 +97,11 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         /// <inheritdoc />
         public async Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken))
         {
+            if(predicate == null)
+            {
+                predicate = x => true;
+            }
+
             IDocumentQuery<TEntity> query = this.Client.CreateDocumentQuery<TEntity>(
                 UriFactory.CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId))
                 .Where(predicate)
@@ -123,6 +133,72 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
                 return Task.FromResult<int>((int)count);
             }
             return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
+        public IQueryable<TEntity> Query(int? take = null, int? skip = null, FeedOptions feedOptions = null)
+        {
+            IQueryable<TEntity> queryable = this.Client.CreateDocumentQuery<TEntity>(UriFactory.CreateDocumentCollectionUri(this.DatabaseId,
+                this.CollectionId), feedOptions);
+
+            if (skip.HasValue)
+            {
+                queryable = queryable.Skip(skip.Value);
+            }
+
+            if (take.HasValue)
+            {
+                queryable = queryable.Take(take.Value);
+            }
+
+            return queryable;
+        }
+
+        /// <inheritdoc />
+        public IQueryable<TEntity> Query(string sql, SqlParameterCollection parameters, int? take = null, int? skip = null, FeedOptions feedOptions = null)
+        {
+            var sqlQuerySpec = parameters != null && parameters.Any() ? new SqlQuerySpec(sql, parameters) : new SqlQuerySpec(sql);
+            IQueryable<TEntity> queryable = this.Client.CreateDocumentQuery<TEntity>(UriFactory.CreateDocumentCollectionUri(this.DatabaseId,
+                this.CollectionId), sqlQuerySpec, feedOptions);
+
+            if (skip.HasValue)
+            {
+                queryable = queryable.Skip(skip.Value);
+            }
+
+            if (take.HasValue)
+            {
+                queryable = queryable.Take(take.Value);
+            }
+
+            return queryable;
+        }
+
+        /// <inheritdoc />
+        public async Task<IFeedResponse<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> predicate, string continuationToken, int? take = null, CancellationToken token = default(CancellationToken))
+        {
+            if (predicate == null)
+            {
+                predicate = x => true;
+            }
+
+            var feedOptions = new FeedOptions
+            {
+                MaxItemCount = take.GetValueOrDefault(-1),
+                RequestContinuation = continuationToken
+            };
+
+            IDocumentQuery<TEntity> query = this.Client.CreateDocumentQuery<TEntity>(
+                UriFactory.CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId), feedOptions)
+                .Where(predicate)
+                .AsDocumentQuery();
+
+            if (query.HasMoreResults)
+            {
+                return await query.ExecuteNextAsync<TEntity>(token);
+            }
+
+            return null;
         }
     }
 }

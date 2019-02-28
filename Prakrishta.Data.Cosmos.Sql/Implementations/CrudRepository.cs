@@ -22,6 +22,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
     public sealed class CrudRepository<TEntity> : ReadRepository<TEntity>, ICrudRepository<TEntity>
         where TEntity : class
     {
+        #region |Constructor|
         /// <summary>
         /// Initializes a new instances of <see cref="CrudRepository<>"/> class.
         /// </summary>
@@ -44,6 +45,9 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
             : base(databaseId, collectionId, client, requestOptions)
         {
         }
+        #endregion
+
+        #region |Interface Implementation|
 
         /// <inheritdoc />
         public async Task<Document> AddAsync(TEntity entity, CancellationToken token = default(CancellationToken))
@@ -67,6 +71,13 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         }
 
         /// <inheritdoc />
+        public async Task<TEntity> ExecuteStoredProcAsync(string storedProcId, CancellationToken token = default(CancellationToken), params object[] procedureParams)
+        {
+            return await this.Client.ExecuteStoredProcedureAsync<TEntity>(UriFactory.CreateStoredProcedureUri(this.DatabaseId,
+                this.CollectionId, storedProcId), options: this.RequestOptions, cancellationToken: token, procedureParams: procedureParams);
+        }
+
+        /// <inheritdoc />
         public async Task<Document> UpdateAsync(string id, TEntity entity)
         {
             return await this.Client.ReplaceDocumentAsync(UriFactory.
@@ -79,5 +90,20 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
             return await this.Client.ReplaceDocumentAsync(UriFactory.
                 CreateDocumentUri(this.DatabaseId, this.CollectionId, entity.Id), entity, this.RequestOptions);
         }
+
+        /// <inheritdoc />
+        public async Task<DocumentCollection> UpdateCollectionAsync(DocumentCollection collection)
+        {
+            return await this.Client.ReplaceDocumentCollectionAsync(UriFactory.
+                CreateDocumentCollectionUri(this.DatabaseId, this.CollectionId), collection, this.RequestOptions);
+        }
+
+        /// <inheritdoc />
+        public async Task<Document> UpsertAsync(string id, TEntity entity, CancellationToken token = default(CancellationToken))
+        {
+            return await this.Client.UpsertDocumentAsync(UriFactory.
+                CreateDocumentUri(this.DatabaseId, this.CollectionId, id), entity, this.RequestOptions);
+        }
+        #endregion
     }
 }
