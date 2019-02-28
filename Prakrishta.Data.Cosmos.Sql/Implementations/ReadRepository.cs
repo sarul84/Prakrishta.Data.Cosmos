@@ -136,40 +136,20 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         }
 
         /// <inheritdoc />
-        public IQueryable<TEntity> Query(int? take = null, int? skip = null, FeedOptions feedOptions = null)
+        public IQueryable<TEntity> Query(FeedOptions feedOptions = null)
         {
             IQueryable<TEntity> queryable = this.Client.CreateDocumentQuery<TEntity>(UriFactory.CreateDocumentCollectionUri(this.DatabaseId,
                 this.CollectionId), feedOptions);
-
-            if (skip.HasValue)
-            {
-                queryable = queryable.Skip(skip.Value);
-            }
-
-            if (take.HasValue)
-            {
-                queryable = queryable.Take(take.Value);
-            }
 
             return queryable;
         }
 
         /// <inheritdoc />
-        public IQueryable<TEntity> Query(string sql, SqlParameterCollection parameters, int? take = null, int? skip = null, FeedOptions feedOptions = null)
+        public IQueryable<TEntity> Query(string sql, SqlParameterCollection parameters, FeedOptions feedOptions = null)
         {
             var sqlQuerySpec = parameters != null && parameters.Any() ? new SqlQuerySpec(sql, parameters) : new SqlQuerySpec(sql);
             IQueryable<TEntity> queryable = this.Client.CreateDocumentQuery<TEntity>(UriFactory.CreateDocumentCollectionUri(this.DatabaseId,
                 this.CollectionId), sqlQuerySpec, feedOptions);
-
-            if (skip.HasValue)
-            {
-                queryable = queryable.Skip(skip.Value);
-            }
-
-            if (take.HasValue)
-            {
-                queryable = queryable.Take(take.Value);
-            }
 
             return queryable;
         }

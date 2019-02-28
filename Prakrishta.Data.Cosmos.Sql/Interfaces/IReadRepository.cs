@@ -43,22 +43,18 @@ namespace Prakrishta.Data.Cosmos.Sql.Interfaces
         /// <summary>
         /// Get the queryable collection
         /// </summary>
-        /// <param name="take">The number of records to be taken from the result</param>
-        /// <param name="skip">The number of records to be skipped from the result before take operation</param>
         /// <param name="feedOptions">The feed options for this operation.</param>
         /// <returns>Returns an IQueryable that matches the expression provided.</returns>
-        IQueryable<TEntity> Query(int? take = null, int? skip = null, FeedOptions feedOptions = null);
+        IQueryable<TEntity> Query(FeedOptions feedOptions = null);
 
         /// <summary>
         /// Get the queryable collection
         /// </summary>
         /// <param name="sql">The sql query</param>
         /// <param name="parameters">The sql parameters to replace if any</param>
-        /// <param name="take">The number of records to be taken from the result</param>
-        /// <param name="skip">The number of records to be skipped from the result before take operation</param>
         /// <param name="feedOptions">The feed options for this operation.</param>
         /// <returns>Returns an IQueryable that matches the expression provided.</returns>
-        IQueryable<TEntity> Query(string sql, SqlParameterCollection parameters, int? take = null, int? skip = null, FeedOptions feedOptions = null);
+        IQueryable<TEntity> Query(string sql, SqlParameterCollection parameters, FeedOptions feedOptions = null);
 
         /// <summary>
         /// Get the Enumerable collection
