@@ -164,7 +164,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
 
             var feedOptions = new FeedOptions
             {
-                MaxItemCount = take.GetValueOrDefault(-1),
+                MaxItemCount = take.GetValueOrDefault(0),
                 RequestContinuation = continuationToken
             };
 

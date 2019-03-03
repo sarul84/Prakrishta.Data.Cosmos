@@ -19,6 +19,7 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
     /// </summary>
     public abstract class RepositoryBase : IAsyncInitialization
     {
+        #region |Constructor|
         /// <summary>
         /// Initializes a new instances of <see cref="RepositoryBase"/> class
         /// </summary>
@@ -34,7 +35,9 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
             this.RequestOptions = requestOptions;
             this.Initialization = this.InitializeAsync();
         }
+        #endregion
 
+        #region |Public properties|
         /// <summary>
         /// Gets or sets database id
         /// </summary>
@@ -59,7 +62,9 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         /// Gets or sets the result of the asynchronous initialization of this instance.
         /// </summary>
         public Task Initialization { get; }
+        #endregion
 
+        #region |Protected Methods|
         /// <summary>
         /// Creates collection if the collection doesn't exist with given collection id in the given database 
         /// </summary>
@@ -78,7 +83,9 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
         {
             return await this.Client.CreateDatabaseIfNotExistsAsync(new Database { Id = this.DatabaseId }, this.RequestOptions);
         }
+        #endregion
 
+        #region |Private Methods|
         /// <summary>
         /// Async initialization to create database and collection if not exists
         /// </summary>
@@ -89,5 +96,6 @@ namespace Prakrishta.Data.Cosmos.Sql.Implementations
             database.Wait();
             await this.CreateCollectionIfNotExistsAsync(database.Result);
         }
+        #endregion
     }
 }
