@@ -1,6 +1,9 @@
 # Prakrishta.Data.Cosmos
 Generic repository for cosmos db using SQL api
 
+Build Status:
+[![Build Status](https://dev.azure.com/prakrishta0270/Prakrishta%20Open%20Source/_apis/build/status/sarul84.Prakrishta.Data.Cosmos?branchName=master)](https://dev.azure.com/prakrishta0270/Prakrishta%20Open%20Source/_build/latest?definitionId=1&branchName=master)
+
 Package installation
 
 ```
